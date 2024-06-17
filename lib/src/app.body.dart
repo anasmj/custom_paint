@@ -1,8 +1,4 @@
-import 'dart:math';
-import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class CustomPaintExample extends StatefulWidget {
   const CustomPaintExample({super.key});
