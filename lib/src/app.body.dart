@@ -1,6 +1,3 @@
-import 'dart:typed_data';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 class CustomPaintExample extends StatefulWidget {
@@ -22,7 +19,7 @@ class _CustomPaintExampleState extends State<CustomPaintExample> {
           color: Colors.grey.shade200,
           child: CustomPaint(
             size: const Size(300, 300),
-            painter: PointPainter(),
+            painter: CirclePainter(),
           ),
         ),
       ),
@@ -30,33 +27,36 @@ class _CustomPaintExampleState extends State<CustomPaintExample> {
   }
 }
 
-class PointPainter extends CustomPainter {
+class CirclePainter extends CustomPainter {
   final painter = Paint()
-    ..color = Colors.black
-    ..strokeWidth = 5
-    ..strokeCap = StrokeCap.round;
+    ..strokeWidth = 2
+    ..style = PaintingStyle.stroke //PaintingStyle.solid for solid circle
+    ..color = Colors.black;
+
   @override
-  void paint(Canvas canvas, Size size) {
-    final points = <Offset>[
-      Offset.zero,
-      Offset(size.width, 0),
-      Offset(size.width / 2, size.height / 2),
-      Offset.zero,
-    ];
-    final rawPoints = Float32List.fromList(
-      [
-        0,
-        0,
-        size.width,
-        0,
-        size.width / 2,
-        size.height / 2,
-        0,
-        0,
-      ],
+  paint(Canvas canvas, Size size) {
+    final center = Offset(size.width / 2, size.height / 2);
+
+    //CIRCLE
+    canvas.drawCircle(center, 10, painter);
+
+    //OVAL
+    canvas.drawOval(const Rect.fromLTWH(0, 0, 100, 200), painter);
+
+    // RECTANGLE: CENTER + WIDTH +HEIGHT
+    canvas.drawRect(
+      Rect.fromCenter(center: center, width: 20, height: 10),
+      painter,
     );
-    canvas.drawPoints(PointMode.polygon, points, painter);
-    canvas.drawRawPoints(PointMode.polygon, rawPoints, painter);
+    //RECTANGLE: CENTER + RADIUS
+    canvas.drawRect(
+      Rect.fromCircle(center: center, radius: 20),
+      painter,
+    );
+    // RECTANGLE: from values of top left + height +width
+    canvas.drawRect(const Rect.fromLTWH(10, 10, 100, 200), painter);
+    //RECTANGLE: takes width = R-L, height = T-B
+    canvas.drawRect(const Rect.fromLTRB(10, 10, 100, 200), painter);
   }
 
   @override
