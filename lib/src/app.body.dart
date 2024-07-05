@@ -55,7 +55,7 @@ class PointPainter extends CustomPainter {
         0,
       ],
     );
-    // canvas.drawPoints(PointMode.polygon, points, painter);
+    canvas.drawPoints(PointMode.polygon, points, painter);
     canvas.drawRawPoints(PointMode.polygon, rawPoints, painter);
   }
 
